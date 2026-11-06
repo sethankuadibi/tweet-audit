@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import csv
+import io
 from pathlib import Path
 from typing import Protocol
 
@@ -30,15 +31,22 @@ async def process_tweets(tweets: list[Tweet], settings: Settings, auditor: Audit
 
 
 def write_flagged_csv(results: list[AuditResult], username: str, output: Path) -> int:
-    flagged = [result for result in results if result.flagged]
+    content, count = build_flagged_csv(results, username)
     with output.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["tweet_url", "deleted", "reason"])
-        writer.writeheader()
-        for result in flagged:
-            writer.writerow({
-                "tweet_url": f"https://x.com/{username}/status/{result.tweet_id}",
-                "deleted": "false",
-                "reason": result.reason,
-            })
-    return len(flagged)
+        handle.write(content)
+    return count
 
+
+def build_flagged_csv(results: list[AuditResult], username: str) -> tuple[str, int]:
+    """Build downloadable CSV content without writing uploaded data to disk."""
+    flagged = [result for result in results if result.flagged]
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=["tweet_url", "deleted", "reason"])
+    writer.writeheader()
+    for result in flagged:
+        writer.writerow({
+            "tweet_url": f"https://x.com/{username}/status/{result.tweet_id}",
+            "deleted": "false",
+            "reason": result.reason,
+        })
+    return output.getvalue(), len(flagged)

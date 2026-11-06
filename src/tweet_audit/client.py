@@ -53,7 +53,15 @@ class GeminiClient:
                 text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
                 parsed = json.loads(text)
                 return AuditResult(tweet.id, bool(parsed["flagged"]), str(parsed["reason"]))
-            except (httpx.TimeoutException, httpx.NetworkError, httpx.HTTPStatusError) as exc:
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code not in {408, 429, 500, 502, 503, 504}:
+                    raise GeminiError(
+                        f"Gemini rejected the request with HTTP {exc.response.status_code}"
+                    ) from exc
+                if attempt + 1 == self.max_retries:
+                    raise GeminiError(f"Gemini request failed after {self.max_retries} attempts") from exc
+                await asyncio.sleep((2**attempt) + random.uniform(0, 0.5))
+            except (httpx.TimeoutException, httpx.NetworkError) as exc:
                 if attempt + 1 == self.max_retries:
                     raise GeminiError(f"Gemini request failed after {self.max_retries} attempts") from exc
                 await asyncio.sleep((2**attempt) + random.uniform(0, 0.5))

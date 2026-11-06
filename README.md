@@ -1,7 +1,8 @@
 # Tweet Audit
 
-A resilient Python CLI that reviews an exported X (Twitter) archive against your own
-alignment criteria using Google Gemini, then produces a CSV for manual review.
+A resilient Python app that reviews an exported X (Twitter) archive against your own
+alignment criteria using Google Gemini, then produces a CSV for manual review. Use the
+browser interface for the easiest experience or the CLI for automation.
 
 > Tweet Audit never deletes posts and does not require X API credentials.
 
@@ -44,6 +45,18 @@ export GEMINI_API_KEY='your-key'
 Edit `config.json` to set your X username and criteria. Do not commit that file.
 
 ## Usage
+
+### Browser interface
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Open the displayed local URL, upload `data/tweets.js`, enter your username, Gemini key, and
+review rules, then download the result. The browser workflow does not write the upload or key
+to disk.
+
+### Command line
 
 Locate `data/tweets.js` inside your extracted X archive, then run:
 
@@ -90,4 +103,3 @@ local configuration, and environment files are excluded through `.gitignore`.
 ## License
 
 MIT
-

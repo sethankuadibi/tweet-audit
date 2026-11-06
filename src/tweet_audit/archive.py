@@ -13,12 +13,18 @@ def load_tweets(path: Path) -> list[Tweet]:
     except FileNotFoundError as exc:
         raise ValueError(f"Archive file not found: {path}") from exc
 
+    return parse_tweets(content, source=str(path))
+
+
+def parse_tweets(content: str, source: str = "uploaded archive") -> list[Tweet]:
+    """Parse JavaScript-wrapped or plain JSON tweet data already in memory."""
+    content = content.lstrip("\ufeff").strip()
     if "=" in content and not content.startswith("["):
         content = content.split("=", 1)[1].strip()
     try:
         records = json.loads(content)
     except json.JSONDecodeError as exc:
-        raise ValueError(f"Could not parse archive file {path}: {exc}") from exc
+        raise ValueError(f"Could not parse {source}: {exc}") from exc
     if not isinstance(records, list):
         raise TypeError("Expected the archive to contain a list of tweets")
 
