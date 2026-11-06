@@ -1,12 +1,34 @@
 [theme]
-primaryColor = "#2563EB"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F3F6FB"
-textColor = "#172033"
-font = "sans-serif"
-baseRadius = "large"
+base = "light"
+primaryColor = "#155EEF"
+backgroundColor = "#F8FAFD"
+secondaryBackgroundColor = "#EDF2F8"
+textColor = "#17243A"
+linkColor = "#155EEF"
+borderColor = "#C9D5E4"
+greenColor = "#167A5B"
+orangeColor = "#B54708"
+redColor = "#B42318"
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+headingFont = "'Space Grotesk':https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+baseFontSize = 16
+headingFontWeights = [700, 600, 600, 500, 500, 500]
+baseRadius = "12px"
+buttonRadius = "8px"
 showWidgetBorder = true
+showSidebarBorder = true
 
 [server]
 maxUploadSize = 200
+headless = true
+address = "0.0.0.0"
+enableXsrfProtection = true
+enableCORS = true
+fileWatcherType = "none"
 
+[client]
+showErrorDetails = "none"
+
+[browser]
+gatherUsageStats = false

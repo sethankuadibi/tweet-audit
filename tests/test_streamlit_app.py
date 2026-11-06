@@ -5,7 +5,7 @@ def test_app_renders_setup_form_without_errors():
     app = AppTest.from_file("../streamlit_app.py").run(timeout=10)
 
     assert not app.exception
-    assert app.title[0].value == "Review your old posts"
+    assert app.title[0].value == "Know what your timeline says."
     assert app.file_uploader
     assert app.button[0].label == "Start review"
 
