@@ -1,0 +1,15 @@
+{
+  "username": "your_x_username",
+  "gemini_api_key": "replace-with-your-key-or-use-GEMINI_API_KEY",
+  "gemini_model": "gemini-2.5-flash",
+  "concurrency": 5,
+  "batch_size": 20,
+  "max_retries": 4,
+  "criteria": {
+    "forbidden_words": ["example"],
+    "professional_check": true,
+    "tone": "respectful and thoughtful",
+    "exclude_politics": false
+  }
+}
+
